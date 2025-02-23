@@ -1,37 +1,41 @@
 // stores/uiStore.ts
 import { create } from 'zustand';
-import type { ViewMode } from '../types/ui.types';
 
-type UIStore = {
-  // State
+// Define explicit types for all state and actions
+type ViewMode = 'grid' | 'list';
+
+interface UIState {
   viewMode: ViewMode;
   commandPaletteOpen: boolean;
   selectedOrderId: string | null;
   sidebarOpen: boolean;
+}
 
-  // Actions
+interface UIActions {
   setViewMode: (mode: ViewMode) => void;
   toggleCommandPalette: () => void;
   setSelectedOrder: (id: string | null) => void;
   toggleSidebar: () => void;
 }
 
-export const useUIStore = create<UIStore>((set) => ({
+// Combine state and actions in store type
+type UIStore = UIState & UIActions;
+
+// Create store with explicit typing
+export const useUIStore = create<UIStore>()((set) => ({
   // Initial state
-  viewMode: 'grid',
+  viewMode: 'grid' as ViewMode,
   commandPaletteOpen: false,
   selectedOrderId: null,
   sidebarOpen: true,
 
-  // Actions
-  setViewMode: (mode) => set({ viewMode: mode }),
-  toggleCommandPalette: () => 
-    set((state) => ({ 
-      commandPaletteOpen: !state.commandPaletteOpen 
-    })),
-  setSelectedOrder: (id) => set({ selectedOrderId: id }),
-  toggleSidebar: () => 
-    set((state) => ({ 
-      sidebarOpen: !state.sidebarOpen 
-    })),
+  // Actions with explicit typing
+  setViewMode: (mode: ViewMode) => set({ viewMode: mode }),
+  toggleCommandPalette: () => set((state) => ({ 
+    commandPaletteOpen: !state.commandPaletteOpen 
+  })),
+  setSelectedOrder: (id: string | null) => set({ selectedOrderId: id }),
+  toggleSidebar: () => set((state) => ({ 
+    sidebarOpen: !state.sidebarOpen 
+  })),
 }));
