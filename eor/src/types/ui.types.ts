@@ -1,4 +1,4 @@
-// ui.types.ts
+// types/ui.types.ts
 export type ViewMode = 'grid' | 'list';
 
 export interface UIState {
